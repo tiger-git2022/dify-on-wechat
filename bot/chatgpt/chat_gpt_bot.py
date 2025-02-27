@@ -98,6 +98,8 @@ class ChatGPTBot(Bot, OpenAIImage, OpenAIVision):
             if reply_content["completion_tokens"] == 0 and len(reply_content["content"]) > 0:
                 reply = Reply(ReplyType.ERROR, reply_content["content"])
             elif reply_content["completion_tokens"] > 0:
+                # 去除content首行的空格
+                reply_content["content"] = reply_content["content"].lstrip()
                 self.sessions.session_reply(reply_content["content"], session_id, reply_content["total_tokens"])
                 reply = Reply(ReplyType.TEXT, reply_content["content"])
             else:
